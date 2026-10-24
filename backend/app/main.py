@@ -1,8 +1,9 @@
 from fastapi import FastAPI
-from app.routers.tasks import router as tasks_router
+from app.routers.task import router
 
 app = FastAPI()
-app.include_router(tasks_router)
+
+app.include_router(router)
 
 @app.get("/health")
 def read_health():

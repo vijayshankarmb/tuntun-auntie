@@ -65,6 +65,7 @@ dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "psycopg2-binary" },
     { name = "pydantic" },
+    { name = "python-dotenv" },
     { name = "sqlalchemy" },
 ]
 
@@ -74,6 +75,7 @@ requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.159.1" },
     { name = "psycopg2-binary", specifier = ">=2.9.13" },
     { name = "pydantic", specifier = ">=2.14.1" },
+    { name = "python-dotenv", specifier = ">=1.2.4" },
     { name = "sqlalchemy", specifier = ">=2.1.6" },
 ]
 
