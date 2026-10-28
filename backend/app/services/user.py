@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 from app.schemas.user import User
 from app.models.user import User as UserModel
 from app.deps.auth import hash_password, verify_password
@@ -12,10 +13,14 @@ def signup_service(db: Session, user_data: User):
             email=user_data.email,
             password=hashed_password
         )
-        db.add(new_user)
-        db.flush()
-        db.refresh(new_user)
-        return new_user
+        try:
+            db.add(new_user)
+            db.flush()
+            db.refresh(new_user)
+            return new_user
+        except IntegrityError:
+            db.rollback()
+            return None
     return None
 
 def signin_service(db: Session, user_data: User):

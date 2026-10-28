@@ -9,12 +9,12 @@ def create_task_service(db: Session, task_data: TaskCreate, user_id: int):
         user_id = user_id
     )
     db.add(new_task)
-    db.commit()
+    db.flush()
     db.refresh(new_task)
     return new_task
 
 def get_all_tasks_service(db: Session, user_id: int):
-    statement = select(Task).where(Task.user_id == user_id)
+    statement = select(Task).where(Task.user_id == user_id).order_by(Task.id.desc())
     tasks = db.scalars(statement).all()
     return tasks
 
@@ -25,7 +25,7 @@ def update_task_service(db: Session, task_id: int, task_data: TaskTitleUpdate, u
     if not task:
         return None
     task.title = task_data.title
-    db.commit()
+    db.flush()
     db.refresh(task)
     return task
 
@@ -36,7 +36,7 @@ def update_task_completed_service(db: Session, task_id: int, task_data: TaskComp
     if not task:
         return None
     task.completed = task_data.completed
-    db.commit()
+    db.flush()
     db.refresh(task)
     return task
 
@@ -47,6 +47,6 @@ def delete_task_service(db: Session, task_id: int, user_id: int):
     if not task:
         return None
     db.delete(task)
-    db.commit()
+    db.flush()
     return task
 

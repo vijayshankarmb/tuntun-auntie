@@ -1,13 +1,17 @@
+import os
+from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlalchemy.orm import Session
 from app.deps.db import get_db
-from app.schemas.user import AuthResponse, User
+from app.schemas.user import User
 from app.deps.auth import create_access_token
 
 from app.services.user import (
     signup_service,
     signin_service
 )
+
+load_dotenv()
 
 router = APIRouter(
     prefix="/auth",
@@ -27,8 +31,8 @@ def signup(user_data: User, response: Response, db: Session = Depends(get_db)):
         key="access_token",
         value=token,
         httponly=True,
-        secure=False,
-        samesite="lax",
+        secure=True if os.getenv("ENVIRONMENT") == "production" else False,
+        samesite="lax" if os.getenv("ENVIRONMENT") == "development" else "strict",
         max_age=3600,
         path="/"
     )
@@ -48,10 +52,18 @@ def signin(user_data: User,response: Response, db: Session = Depends(get_db)):
         key="access_token",
         value=token,
         httponly=True,
-        secure=False,
-        samesite="lax",
+        secure=True if os.getenv("ENVIRONMENT") == "production" else False,
+        samesite="lax" if os.getenv("ENVIRONMENT") == "development" else "strict",
         max_age=3600,
         path="/"
     )
     return {"detail": "Successfully signed in"}
+
+@router.post("/signout", status_code=status.HTTP_200_OK)
+def signout(response: Response):
+    response.delete_cookie(
+        key="access_token",
+        path="/"
+    )
+    return {"detail": "Successfully signed out"}
 

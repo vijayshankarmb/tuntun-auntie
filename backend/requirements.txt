@@ -6,3 +6,4 @@ alembic
 python-dotenv
 pyJWT
 argon2-cffi
+email-validator
