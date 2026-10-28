@@ -1,0 +1,42 @@
+# Dependencies
+**/node_modules/
+**/.venv/
+**/venv/
+
+# Environment variables
+**/.env
+**/.env.*
+!**/.env.example
+
+# Python cache
+**/__pycache__/
+*.py[cod]
+**/*.egg-info/
+**/build/
+**/dist/
+
+# Testing and tooling
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.next/
+**/coverage/
+**/htmlcov/
+**/.coverage
+
+# Build output
+**/out/
+**/dist/
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Secrets and local databases
+*.sqlite3
+*.db
