@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlalchemy.orm import Session
 from app.deps.db import get_db
 from app.schemas.user import User
-from app.deps.auth import create_access_token
+from app.deps.auth import create_access_token, get_current_user
 
 from app.services.user import (
     signup_service,
@@ -66,4 +66,8 @@ def signout(response: Response):
         path="/"
     )
     return {"detail": "Successfully signed out"}
+
+@router.get("/me", status_code=status.HTTP_200_OK)
+def get_current_user_info(current_user: User = Depends(get_current_user)):
+    return current_user
 
